@@ -1,5 +1,6 @@
 package com.jeongseunggyu.colocsseum
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -21,6 +22,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.signUpBtn.setOnClickListener {
+
+            val myIntent = Intent(mContext, SignUpActivity::class.java)
+            startActivity(myIntent)
+
+        }
+
+
         binding.loginBtn.setOnClickListener {
             //입력한 이메일 / 비밀번호가 뭔지 변수에 저장.
             val inputEmail = binding.emailEdt.text.toString()
@@ -56,5 +66,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setValues() {
+
+
     }
 }
