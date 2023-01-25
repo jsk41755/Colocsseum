@@ -1,17 +1,23 @@
 package com.jeongseunggyu.colocsseum.utils
 
-import okhttp3.FormBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import android.util.Log
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
 
 class ServerUtil {
     //어떤 내용?? => 서버 연결 전달
     companion object {
+
+        interface JsonResponseHandler {
+            fun onResponse(jsonObj : JSONObject)
+        }
+
         //모든 기능의 기본이 되는 주소
-        val BASE_URL = "http//54.180.52.26"
+        val BASE_URL = "http://54.180.52.26"
 
         //로그인 하는 기능
-        fun postRequestLogin(email : String, pw : String){
+        fun postRequestLogin(email : String, pw : String, handler : JsonResponseHandler?){
 //          서버에 입력받은 email, pw 전달 => 로그인 기능 POST / user 로 전달. => 요청(Request) 실행.
             // 라이브러리 (okHTTP) 활용해서 짜보자
 
@@ -35,8 +41,33 @@ class ServerUtil {
             //클라이언트로써의 동작 : Request 요청 실행. => OkHTTP라이브러리 지원.
             val client = OkHttpClient()
 
-            //실제로 서버에 요청 날리기
-            client.newCall(request)
+            //실제로 서버에 요청 날리기 => 갔다 와서는 뭘 한건지?
+            client.newCall(request).enqueue(object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    //서버의 연결 자체를 실패한 경우.
+                    //서버 마비, 인터넷 단선. (로그인 실패X)
+                    Log.d("응답 본문", "에ㅔ레렐ㄹ레")
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    //로그인 성공, 로그인 실패(연결 성공 -> 검사 실패)
+                    //응답이 돌아온 경우.
+
+                    //응답 본문을 String으로 저장
+                    val bodyString = response.body!!.string()
+
+                    //bodyString 변수에는 한글이 깨져있다. => JsonObject로 변환하면, 한글 정상 처리.
+                    val jsonObj = JSONObject(bodyString)
+
+                    Log.d("응답 본문", jsonObj.toString())
+
+                    //handler 변수가 null이 아니라면, (실체가 있다면)
+                    //그 내부에 적힌 내용 실행.
+
+                    handler?.onResponse(jsonObj)
+                }
+
+            })
         }
 
     }

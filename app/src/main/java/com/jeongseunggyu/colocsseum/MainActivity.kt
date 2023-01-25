@@ -3,6 +3,7 @@ package com.jeongseunggyu.colocsseum
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.jeongseunggyu.colocsseum.databinding.ActivityMainBinding
+import com.jeongseunggyu.colocsseum.utils.ServerUtil
 
 class MainActivity : BaseActivity() {
 
@@ -23,8 +24,8 @@ class MainActivity : BaseActivity() {
             val inputEmail = binding.emailEdt.text.toString()
             val inputPw = binding.passwordEdt.text.toString()
 
-            //서버에 실제 회원이 맞는지 확인 요청. (Request) ??
-
+            //서버에 실제 회원이 맞는지 확인 요청. (Request)
+            ServerUtil.postRequestLogin(inputEmail, inputPw)
         }
 
     }
