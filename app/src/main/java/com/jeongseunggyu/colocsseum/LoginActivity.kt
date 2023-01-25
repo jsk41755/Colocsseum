@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.jeongseunggyu.colocsseum.databinding.ActivityLoginBinding
+import com.jeongseunggyu.colocsseum.utils.ContextUtil
 import com.jeongseunggyu.colocsseum.utils.ServerUtil
 import org.json.JSONObject
 
@@ -45,6 +46,12 @@ class LoginActivity : BaseActivity() {
                     val code = jsonObj.getInt("code")
                     if(code == 200){
                         //로그인 성공
+
+                        //서버가 주는 토큰을 추출해서 저장
+                        val dataObj = jsonObj.getJSONObject("data")
+                        val token = dataObj.getString("token")
+
+                        ContextUtil.setToken(mContext, token)
 
                         val myIntent = Intent(mContext, MainActivity::class.java)
                         startActivity(myIntent)
