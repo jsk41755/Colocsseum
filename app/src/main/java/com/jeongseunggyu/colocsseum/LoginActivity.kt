@@ -1,20 +1,19 @@
 package com.jeongseunggyu.colocsseum
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.jeongseunggyu.colocsseum.databinding.ActivityMainBinding
+import com.jeongseunggyu.colocsseum.databinding.ActivityLoginBinding
 import com.jeongseunggyu.colocsseum.utils.ServerUtil
 import org.json.JSONObject
 
-class MainActivity : BaseActivity() {
+class LoginActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         setValues()
