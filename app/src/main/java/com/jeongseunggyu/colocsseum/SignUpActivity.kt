@@ -23,6 +23,22 @@ class SignUpActivity : BaseActivity() {
 
     override fun setupEvents() {
 
+        binding.emailCheckBtn.setOnClickListener {
+
+            //입력한 이메일? => 중복 검사.
+            val inputEmail = binding.emailEdt.text.toString()
+
+            //서버 중복 여부 확인. API 호출
+            ServerUtil.getRequestDuplCheck("EMAIL", inputEmail, object : ServerUtil.Companion.JsonResponseHandler{
+                override fun onResponse(jsonObj: JSONObject) {
+
+                }
+
+            })
+
+
+        }
+
         binding.signUpBtn.setOnClickListener {
             val inputEmail = binding.emailEdt.text.toString()
             val inputPw = binding.passwordEdt.text.toString()
