@@ -51,6 +51,7 @@ class LoginActivity : BaseActivity() {
 
                         finish()
 
+
                     }
                     else{
                         //로그인 실패
