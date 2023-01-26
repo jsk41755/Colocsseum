@@ -1,5 +1,6 @@
 package com.jeongseunggyu.colocsseum
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.jeongseunggyu.colocsseum.adapters.TopicAdapter
@@ -25,6 +26,17 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.topicListView.setOnItemClickListener { parent, view, position, id ->
+
+            val clickTopic = mTopicList[position]
+
+            val myIntent = Intent(mContext, ViewTopicDetailActivity::class.java)
+            myIntent.putExtra("topic", clickTopic)
+            startActivity(myIntent)
+
+
+        }
 
     }
 
