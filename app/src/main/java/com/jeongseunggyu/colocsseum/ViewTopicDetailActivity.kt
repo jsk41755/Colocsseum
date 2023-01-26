@@ -45,6 +45,27 @@ class ViewTopicDetailActivity : BaseActivity() {
         ServerUtil.getRequestTopicDetail(mContext, mTopic.id, object : ServerUtil.Companion.JsonResponseHandler{
             override fun onResponse(jsonObj: JSONObject) {
 
+                val dataObj = jsonObj.getJSONObject("data")
+                val topicObj = dataObj.getJSONObject("topic")
+
+                val topic = Topic.getTopicDataFromJson(topicObj)
+
+                mTopic = topic
+
+                //최신 득표 현황까지 받아서 mTopic에 저장됨.
+                //UI에 득표 현황 반영
+
+
+                //서버에 갔다와서 수정해주니 바꿔야 함.
+                runOnUiThread {
+                    binding.firstSideTxt.text = mTopic.sides[0].title
+                    binding.firstSideVoteCountTxt.text = "${mTopic.sides[0].voteCount}표"
+
+                    binding.secondSideTxt.text = mTopic.sides[1].title
+                    binding.secondSideVoteCountTxt.text = "${mTopic.sides[1].voteCount}표"
+                }
+
+
             }
 
         })

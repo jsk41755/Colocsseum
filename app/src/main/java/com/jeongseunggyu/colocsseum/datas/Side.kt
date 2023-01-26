@@ -2,7 +2,7 @@ package com.jeongseunggyu.colocsseum.datas
 
 import org.json.JSONObject
 
-class Side {
+class Side : java.io.Serializable {
     var id = 0
     var topicId = 0
     var title = ""
