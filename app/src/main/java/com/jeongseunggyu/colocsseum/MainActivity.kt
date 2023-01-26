@@ -2,6 +2,7 @@ package com.jeongseunggyu.colocsseum
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jeongseunggyu.colocsseum.adapters.TopicAdapter
 import com.jeongseunggyu.colocsseum.databinding.ActivityMainBinding
 import com.jeongseunggyu.colocsseum.databinding.ActivitySignUpBinding
 import com.jeongseunggyu.colocsseum.datas.Topic
@@ -11,6 +12,8 @@ import org.json.JSONObject
 class MainActivity : BaseActivity() {
 
     val mTopicList = ArrayList<Topic>()
+
+    lateinit var mTopicAdapter : TopicAdapter
 
     private lateinit var binding : ActivityMainBinding
 
@@ -27,6 +30,9 @@ class MainActivity : BaseActivity() {
 
     override fun setValues() {
         getTopicListFromServer()
+
+        mTopicAdapter = TopicAdapter(mContext, R.layout.topic_list_item, mTopicList)
+        binding.topicListView.adapter = mTopicAdapter
 
     }
 
@@ -51,6 +57,11 @@ class MainActivity : BaseActivity() {
                     //mTopicList 추가.
                     mTopicList.add(topicData)
 
+                }
+
+                //어댑터가 먼저 세팅 되고 => 나중에 목록에 추가. => 새로고침 필요 (UI영향) 서버는 백그라운드에서 따로 돌음
+                runOnUiThread{
+                    mTopicAdapter.notifyDataSetChanged()
                 }
 
 
