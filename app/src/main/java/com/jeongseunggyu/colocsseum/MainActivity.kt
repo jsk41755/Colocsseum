@@ -45,10 +45,11 @@ class MainActivity : BaseActivity() {
                 for(index in 0 until topicsArr.length()){
 
                     //index 위치에 맞는 주제들을 Topic 클래스 형태로 변환.
-
-
+                    val topicObj = topicsArr.getJSONObject(index)
+                    val topicData = Topic.getTopicDataFromJson(topicObj)
 
                     //mTopicList 추가.
+                    mTopicList.add(topicData)
 
                 }
 
