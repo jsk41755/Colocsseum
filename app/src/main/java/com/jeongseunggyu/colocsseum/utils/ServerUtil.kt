@@ -210,5 +210,48 @@ class ServerUtil {
 
         }
 
+        //원하는 주제 상세현황 확인 기능
+        fun getRequestTopicDetail(context: Context, topicId: Int ,handler: JsonResponseHandler?){
+
+            //어디로? + 어떤 데이터? 같이 명시하자.
+            //URL 적으면 + 파라미터 첨부도 같이. => 보조 도구(Builder)
+
+            val urlBuilder = "${BASE_URL}/topic".toHttpUrlOrNull()!!.newBuilder()
+            urlBuilder.addEncodedPathSegments(topicId.toString()) // pathParameter 또는 윗줄에 topic에 /${}로 해줘도 됨
+            /*urlBuilder.addEncodedQueryParameter("type", type)
+            urlBuilder.addEncodedQueryParameter("value", value)*/
+
+            val urlString = urlBuilder.build().toString()
+
+            Log.d("완성된 URL", urlString)
+
+            val request = Request.Builder()
+                .url(urlString)
+                .get()
+                .header("X-Http-Token", ContextUtil.getToken(context))
+                .build()
+
+            val client = OkHttpClient()
+
+            client.newCall(request).enqueue(object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+
+                    val bodyString = response.body!!.string()
+
+                    val jsonObj = JSONObject(bodyString)
+                    Log.d("서버응답본문", jsonObj.toString())
+
+                    handler?.onResponse(jsonObj)
+
+                }
+
+            })
+
+        }
+
     }
 }
