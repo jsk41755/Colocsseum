@@ -1,12 +1,15 @@
 package com.jeongseunggyu.colocsseum
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.jeongseunggyu.colocsseum.adapters.ReplyAdapter
 import com.jeongseunggyu.colocsseum.databinding.ActivitySplashBinding
 import com.jeongseunggyu.colocsseum.databinding.ActivityViewTopicDetailBinding
 import com.jeongseunggyu.colocsseum.datas.Reply
+import com.jeongseunggyu.colocsseum.datas.Side
 import com.jeongseunggyu.colocsseum.datas.Topic
 import com.jeongseunggyu.colocsseum.utils.ServerUtil
 import org.json.JSONObject
@@ -20,6 +23,9 @@ class ViewTopicDetailActivity : BaseActivity() {
     val mReplyList = ArrayList<Reply>()
     lateinit var mReplyAdapter : ReplyAdapter
 
+    //내가 선택한 진영이 어디인지? 초기값은 선택진영 없다. (null)
+    var mySelectedSide : Side? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityViewTopicDetailBinding.inflate(layoutInflater)
@@ -30,6 +36,25 @@ class ViewTopicDetailActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.writeReplyBtn.setOnClickListener {
+            //만약 선택된 진영이 없다면, 투표부터 하도록.
+            if(mySelectedSide == null){
+                Toast.makeText(mContext, "투표를 한 이후에만 의견을 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+
+
+            }
+            else{
+                //의견 작성 화면으로 이동.
+                val myIntent = Intent(mContext, EditReplyActivity::class.java)
+                myIntent.putExtra("mySide", mySelectedSide)
+
+                startActivity(myIntent)
+            }
+
+
+        }
+
         binding.voteToFirstSideBtn.setOnClickListener {
             //API 확인 => 토큰(ContextUtil) + 어떤 진영 선택? (해당 진영의 id값)
 
@@ -90,6 +115,9 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                 val replyArr = topicObj.getJSONArray("replies")
 
+                //똑같은 데이터가 계속 쌓이는 것을 막자.
+                mReplyList.clear()
+
                 for (i in 0 until replyArr.length()){
 
                     val replyObj = replyArr.getJSONObject(i)
@@ -97,6 +125,22 @@ class ViewTopicDetailActivity : BaseActivity() {
                     mReplyList.add(reply)
 
                 }
+
+                //내가 선택한 진영이 있다면 => 파싱해서 mySelectedSide에 담아두자
+
+                //topciObj 내부의 my_side를 추출 => null이 아닐떄만 추출.
+
+                mySelectedSide = null
+
+                if(!topicObj.isNull("my_side")){
+
+                    val mySideObj = topicObj.getJSONObject("my_side")
+                    val mySide = Side.getSideFromJson(mySideObj)
+                    mySelectedSide = mySide
+
+
+                }
+
 
                 //최신 득표 현황까지 받아서 mTopic에 저장됨.
                 //UI에 득표 현황 반영
