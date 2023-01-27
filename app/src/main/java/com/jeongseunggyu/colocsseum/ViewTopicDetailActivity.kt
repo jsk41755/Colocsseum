@@ -3,8 +3,10 @@ package com.jeongseunggyu.colocsseum
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
+import com.jeongseunggyu.colocsseum.adapters.ReplyAdapter
 import com.jeongseunggyu.colocsseum.databinding.ActivitySplashBinding
 import com.jeongseunggyu.colocsseum.databinding.ActivityViewTopicDetailBinding
+import com.jeongseunggyu.colocsseum.datas.Reply
 import com.jeongseunggyu.colocsseum.datas.Topic
 import com.jeongseunggyu.colocsseum.utils.ServerUtil
 import org.json.JSONObject
@@ -14,6 +16,9 @@ class ViewTopicDetailActivity : BaseActivity() {
     lateinit var mTopic: Topic
 
     private lateinit var binding: ActivityViewTopicDetailBinding
+
+    val mReplyList = ArrayList<Reply>()
+    lateinit var mReplyAdapter : ReplyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +66,9 @@ class ViewTopicDetailActivity : BaseActivity() {
         binding.topicTitleTxt.text = mTopic.title
         Glide.with(mContext).load(mTopic.imageURL).into(binding.topicImg)
 
+        mReplyAdapter = ReplyAdapter(mContext, R.layout.reply_list_item, mReplyList)
+        binding.replyListView.adapter = mReplyAdapter
+
         //현재 투표 현황을 다시 서버에서 받아오자.
         getTopicDetailFromServer()
 
@@ -78,6 +86,18 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                 mTopic = topic
 
+                //topicObj 내부의 replies JSONArray 파싱 => 의견 목록에 담아주자.
+
+                val replyArr = topicObj.getJSONArray("replies")
+
+                for (i in 0 until replyArr.length()){
+
+                    val replyObj = replyArr.getJSONObject(i)
+                    val reply = Reply.getReplyFromJson(replyObj)
+                    mReplyList.add(reply)
+
+                }
+
                 //최신 득표 현황까지 받아서 mTopic에 저장됨.
                 //UI에 득표 현황 반영
 
@@ -89,6 +109,10 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                     binding.secondSideTxt.text = mTopic.sides[1].title
                     binding.secondSideVoteCountTxt.text = "${mTopic.sides[1].voteCount}표"
+
+                    //댓글 목록 새로고침
+                    mReplyAdapter.notifyDataSetChanged()
+
                 }
 
 
