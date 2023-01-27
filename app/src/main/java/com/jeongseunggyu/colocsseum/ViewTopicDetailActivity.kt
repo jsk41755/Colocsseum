@@ -30,7 +30,10 @@ class ViewTopicDetailActivity : BaseActivity() {
 
             ServerUtil.postRequestVote(mContext,mTopic.sides[0].id, object : ServerUtil.Companion.JsonResponseHandler{
                 override fun onResponse(jsonObj: JSONObject) {
-                    //서버 응답 대응.
+                    //서버 응답 대응. => 서버에서 최신 투표 현황을 받아서, 다시 UI에 반영.
+                    // 만들어둔 함수 재활용
+
+                    getTopicDetailFromServer()
 
                 }
 
