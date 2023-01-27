@@ -35,6 +35,12 @@ class ViewTopicDetailActivity : BaseActivity() {
         setupEvents()
     }
 
+    override fun onResume() {
+        super.onResume() //return super~ 이 아니면 웬만하면 살려줌
+
+        getTopicDetailFromServer()
+    }
+
     override fun setupEvents() {
 
         binding.writeReplyBtn.setOnClickListener {
