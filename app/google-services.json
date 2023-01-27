@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1072918687227",
+    "project_id": "colocsseum",
+    "storage_bucket": "colocsseum.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072918687227:android:7323ef489977e444e42f5e",
+        "android_client_info": {
+          "package_name": "com.jeongseunggyu.colocsseum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072918687227-ct2ad3s30hl7pa7b7oatgebam6vo2p8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVFVqM7UucMN8AehPvD7j8ZIotvAh0eXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072918687227-ct2ad3s30hl7pa7b7oatgebam6vo2p8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
