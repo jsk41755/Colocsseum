@@ -3,6 +3,7 @@ package com.jeongseunggyu.colocsseum
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.jeongseunggyu.colocsseum.adapters.TopicAdapter
 import com.jeongseunggyu.colocsseum.databinding.ActivityMainBinding
 import com.jeongseunggyu.colocsseum.databinding.ActivitySignUpBinding
@@ -45,6 +46,9 @@ class MainActivity : BaseActivity() {
 
         mTopicAdapter = TopicAdapter(mContext, R.layout.topic_list_item, mTopicList)
         binding.topicListView.adapter = mTopicAdapter
+
+        //BaseActivity가 물려준 백버튼을 숨김처리
+        backBtn.visibility = View.GONE
 
     }
 
