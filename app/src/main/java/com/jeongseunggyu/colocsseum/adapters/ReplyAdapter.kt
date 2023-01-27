@@ -36,6 +36,9 @@ class ReplyAdapter(
 
         contentTxt.text = data.content
 
+        selectSideTxt.text = "(${data.selectedSide.title})"
+
+        userNicknameTxt.text = data.writerNickname
 
         return row
     }
